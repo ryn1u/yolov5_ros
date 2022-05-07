@@ -17,7 +17,7 @@ from detection_msgs.msg import BoundingBox, BoundingBoxes
 
 # add yolov5 submodule to path
 FILE = Path(__file__).resolve()
-ROOT = FILE.parents[0] / "yolov5"
+ROOT = FILE.parents[0] / "haller_yolov5"
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative path
@@ -72,7 +72,7 @@ class Yolov5Detector:
             self.model.model.half() if self.half else self.model.model.float()
         bs = 1  # batch_size
         cudnn.benchmark = True  # set True to speed up constant image size inference
-        self.model.warmup(imgsz=(1 if self.pt else bs, 3, *self.img_size), half=self.half)  # warmup        
+        self.model.warmup(imgsz=(1 if self.pt else bs, 3, *self.img_size))  # warmup        
         
         # Initialize subscriber to Image/CompressedImage topic
         input_image_type, input_image_topic, _ = get_topic_type(rospy.get_param("~input_image_topic"), blocking = True)
